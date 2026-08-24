@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>競馬 期待値検証トラッカー</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">KEIBA EV TRACKER</p>
+      <h1>競馬 期待値検証トラッカー</h1>
+      <p class="sub">買った馬券も、見送った候補も残して「予測の正確性」と「実回収率」をあとから検証。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card settings-card">
+      <div class="section-head">
+        <div>
+          <h2>資金設定</h2>
+          <p>月予算は初期値 10,000円。ブラウザ内に自動保存されます。</p>
+        </div>
+      </div>
+      <div class="settings-grid">
+        <label>
+          <span>月予算（円）</span>
+          <input id="monthlyBudget" type="number" min="0" step="100" value="10000" />
+        </label>
+        <label>
+          <span>分析バージョン</span>
+          <input id="modelVersion" type="text" value="v1" placeholder="例：v1 / 2026-08式" />
+        </label>
+      </div>
+      <div class="budget-bar-wrap">
+        <div class="budget-meta">
+          <strong id="budgetMonthLabel">今月</strong>
+          <span id="budgetText">0 / 10,000円</span>
+        </div>
+        <div class="budget-bar"><div id="budgetBarFill"></div></div>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="集計">
+      <div class="stat-card"><span>購入件数</span><strong id="statBought">0</strong></div>
+      <div class="stat-card"><span>投資額</span><strong id="statStake">0円</strong></div>
+      <div class="stat-card"><span>払戻額</span><strong id="statReturn">0円</strong></div>
+      <div class="stat-card"><span>損益</span><strong id="statProfit">0円</strong></div>
+      <div class="stat-card"><span>実回収率</span><strong id="statRoi">—</strong></div>
+      <div class="stat-card"><span>的中率</span><strong id="statHitRate">—</strong></div>
+      <div class="stat-card"><span>平均予測EV</span><strong id="statAvgEv">—</strong></div>
+      <div class="stat-card"><span>候補総数</span><strong id="statCandidates">0</strong></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2>記録を追加</h2>
+          <p>「見送り」も結果まで入力すると、後からEV基準を変えた仮想検証ができます。</p>
+        </div>
+        <button id="clearFormBtn" class="ghost-btn" type="button">入力をクリア</button>
+      </div>
+
+      <form id="recordForm" novalidate>
+        <input id="recordId" type="hidden" />
+
+        <div class="form-section-title">レース情報</div>
+        <div class="form-grid cols-4">
+          <label><span>日付 *</span><input id="raceDate" type="date" required /></label>
+          <label><span>競馬場 *</span><input id="track" type="text" placeholder="例：阪神" required /></label>
+          <label><span>R *</span><input id="raceNo" type="number" min="1" max="12" placeholder="例：11" required /></label>
+          <label><span>発走時刻</span><input id="startTime" type="time" /></label>
+        </div>
+        <div class="form-grid cols-4">
+          <label><span>芝・ダート等</span>
+            <select id="surface">
+              <option value="">—</option><option>芝</option><option>ダート</option><option>障害</option><option>その他</option>
+            </select>
+          </label>
+          <label><span>距離（m）</span><input id="distance" type="number" min="0" step="100" placeholder="例：1600" /></label>
+          <label><span>馬場状態</span>
+            <select id="going">
+              <option value="">—</option><option>良</option><option>稍重</option><option>重</option><option>不良</option><option>その他</option>
+            </select>
+          </label>
+          <label><span>出走頭数</span><input id="fieldSize" type="number" min="1" max="30" /></label>
+        </div>
+        <div class="form-grid cols-2">
+          <label><span>レース名 / クラス</span><input id="raceName" type="text" placeholder="例：3歳未勝利 / G1 日本ダービー" /></label>
+          <label><span>予想時点（発走何分前）</span><input id="minutesBefore" type="number" min="0" step="0.1" placeholder="例：3" /></label>
+        </div>
+
+        <div class="form-section-title">買い目・予測</div>
+        <div class="form-grid cols-4">
+          <label><span>購入判断 *</span>
+            <select id="decision" required>
+              <option value="購入">購入</option>
+              <option value="見送り">見送り</option>
+            </select>
+          </label>
+          <label><span>券種 *</span>
+            <select id="betType" required>
+              <option>単勝</option><option>複勝</option><option>ワイド</option><option>馬連</option>
+              <option>馬単</option><option>3連複</option><option>3連単</option><option>枠連</option>
+              <option>WIN5</option><option>その他</option>
+            </select>
+          </label>
+          <label><span>買い目 *</span><input id="selection" type="text" placeholder="例：7 / 3-7 / 7→3" required /></label>
+          <label><span>人気</span><input id="popularity" type="number" min="1" max="30" placeholder="例：5" /></label>
+        </div>
+
+        <div class="form-grid cols-4">
+          <label><span>推定的中確率（%）*</span><input id="predProb" type="number" min="0" max="100" step="0.1" placeholder="例：22" required /></label>
+          <label><span>判断時オッズ 下限 *</span><input id="oddsLow" type="number" min="1" step="0.1" placeholder="例：5.8" required /></label>
+          <label><span>判断時オッズ 上限</span><input id="oddsHigh" type="number" min="1" step="0.1" placeholder="複勝など：7.2" /></label>
+          <label>
+            <span>EV計算用オッズ *</span>
+            <input id="evalOdds" type="number" min="1" step="0.1" placeholder="例：5.8" required />
+            <small>単勝はそのまま。複勝・ワイド等は保守的な評価値を入れる。</small>
+          </label>
+        </div>
+
+        <div class="calc-strip">
+          <div><span>適正オッズ</span><strong id="fairOddsPreview">—</strong></div>
+          <div><span>予測EV</span><strong id="evPreview">—</strong></div>
+          <div><span>市場との差</span><strong id="edgePreview">—</strong></div>
+        </div>
+
+        <div class="form-grid cols-4">
+          <label><span>購入額（円）</span><input id="stake" type="number" min="0" step="100" value="100" /></label>
+          <label><span>信頼度</span>
+            <select id="confidence">
+              <option value="">—</option><option value="1">1 低い</option><option value="2">2</option>
+              <option value="3">3 普通</option><option value="4">4</option><option value="5">5 高い</option>
+            </select>
+          </label>
+          <label><span>最低購入EV（記録用）</span><input id="thresholdEv" type="number" min="0" step="1" value="110" /></label>
+          <label><span>予想モデル / 担当</span><input id="modelName" type="text" value="ChatGPT" /></label>
+        </div>
+
+        <fieldset class="factor-box">
+          <legend>今回の判断で重視した要因</legend>
+          <div id="factorChecks" class="check-grid"></div>
+        </fieldset>
+
+        <label class="full-label">
+          <span>分析メモ</span>
+          <textarea id="analysisMemo" rows="3" placeholder="なぜ割安と判断したか。展開想定、懸念点、買わなかった理由など。"></textarea>
+        </label>
+
+        <div class="form-section-title">レース後（あとから追記OK）</div>
+        <div class="form-grid cols-4">
+          <label><span>結果</span>
+            <select id="resultStatus">
+              <option value="未確定">未確定</option><option value="的中">的中</option><option value="不的中">不的中</option><option value="返還">返還</option>
+            </select>
+          </label>
+          <label><span>最終オッズ 下限</span><input id="finalOddsLow" type="number" min="1" step="0.1" /></label>
+          <label><span>最終オッズ 上限</span><input id="finalOddsHigh" type="number" min="1" step="0.1" /></label>
+          <label>
+            <span>公式払戻（100円あたり）</span>
+            <input id="payoutPer100" type="number" min="0" step="10" placeholder="例：620" />
+            <small>見送り候補も入力すると仮想検証できます。</small>
+          </label>
+        </div>
+        <label class="full-label">
+          <span>結果メモ</span>
+          <textarea id="resultMemo" rows="2" placeholder="着順、展開のズレ、予想が当たった/外れた理由など。"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="primary-btn" type="submit" id="saveBtn">記録を保存</button>
+        </div>
+        <p id="formError" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2>検証ダッシュボード</h2>
+          <p>購入実績と、予測確率の当たり具合を分けて見ます。</p>
+        </div>
+      </div>
+
+      <div class="analysis-block">
+        <h3>券種別</h3>
+        <div class="table-wrap"><table id="byBetTypeTable"></table></div>
+      </div>
+
+      <div class="analysis-block">
+        <h3>予測EV帯別</h3>
+        <div class="table-wrap"><table id="byEvBandTable"></table></div>
+      </div>
+
+      <div class="analysis-block">
+        <h3>確率予測の校正</h3>
+        <p class="hint">例：予測20〜30%の馬券が大量にあるなら、実際の的中率もその近辺かを確認。</p>
+        <div class="table-wrap"><table id="calibrationTable"></table></div>
+      </div>
+
+      <div class="analysis-block">
+        <h3>EVしきい値シミュレーション</h3>
+        <div class="sim-row">
+          <label><span>予測EVが</span><input id="simEvThreshold" type="number" min="0" step="1" value="110" /><span>%以上を全部100円ずつ買ったら</span></label>
+          <button id="runSimulationBtn" class="secondary-btn" type="button">計算</button>
+        </div>
+        <div id="simulationResult" class="simulation-result">候補の結果が溜まるとここで比較できます。</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2>記録一覧</h2>
+          <p>購入・見送りをまとめて保存。検索や絞り込みもできます。</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input id="searchText" type="search" placeholder="競馬場・買い目・メモを検索" />
+        <select id="filterDecision"><option value="">購入判断：すべて</option><option>購入</option><option>見送り</option></select>
+        <select id="filterBetType"><option value="">券種：すべて</option></select>
+        <select id="filterResult"><option value="">結果：すべて</option><option>未確定</option><option>的中</option><option>不的中</option><option>返還</option></select>
+      </div>
+
+      <div class="table-wrap records-wrap">
+        <table id="recordsTable"></table>
+      </div>
+      <p id="emptyMessage" class="empty">まだ記録がありません。</p>
+    </section>
+
+    <section class="card backup-card">
+      <div class="section-head">
+        <div>
+          <h2>バックアップ</h2>
+          <p>GitHub Pagesは静的サイトなので、記録はこの端末のブラウザに保存されます。定期的にJSONを書き出すのがおすすめ。</p>
+        </div>
+      </div>
+      <div class="backup-actions">
+        <button id="exportJsonBtn" class="secondary-btn" type="button">JSONを書き出す</button>
+        <button id="exportCsvBtn" class="secondary-btn" type="button">CSVを書き出す</button>
+        <label class="file-btn">JSONを読み込む<input id="importJsonInput" type="file" accept=".json,application/json" hidden /></label>
+        <button id="deleteAllBtn" class="danger-btn" type="button">全データ削除</button>
+      </div>
+    </section>
+
+    <section class="card note-card">
+      <h2>このツールで検証したいこと</h2>
+      <ul>
+        <li>予測した的中確率が、実際の的中率と合っているか</li>
+        <li>予測EVが高いほど、実回収率も高くなるか</li>
+        <li>単勝・複勝・ワイドなど、どの券種で優位性が出ているか</li>
+        <li>オッズ帯・人気・馬場・距離・競馬場・重視要因で差が出るか</li>
+        <li>購入基準を EV105 / 110 / 120% などに変えた場合、結果がどう変わるか</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>記録は端末内保存。利益を保証するものではありません。分析用の検証ツールとして使ってください。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
