@@ -1,0 +1,39 @@
+{
+  "app": "keiba-ev-tracker",
+  "version": 2,
+  "source": "ChatGPT",
+  "records": [
+    {
+      "id": "sample-2026-08-30-niigata-11-win-7",
+      "raceDate": "2026-08-30",
+      "track": "新潟",
+      "raceNo": 11,
+      "raceName": "サンプルレース",
+      "surface": "芝",
+      "distance": 1600,
+      "going": "良",
+      "fieldSize": 16,
+      "minutesBefore": 3,
+      "decision": "購入",
+      "betType": "単勝",
+      "selection": "7",
+      "popularity": 5,
+      "predProb": 22.0,
+      "oddsLow": 6.0,
+      "oddsHigh": null,
+      "evalOdds": 6.0,
+      "stake": 200,
+      "confidence": 3,
+      "thresholdEv": 110,
+      "modelName": "ChatGPT",
+      "modelVersion": "v2",
+      "factors": [
+        "近走内容",
+        "距離適性",
+        "人気/オッズの歪み"
+      ],
+      "analysisMemo": "読み込み確認用のサンプルです。実際の馬券記録ではありません。",
+      "resultStatus": "未確定"
+    }
+  ]
+}
