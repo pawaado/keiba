@@ -1,39 +1,34 @@
 {
-  "app": "keiba-ev-tracker",
-  "version": 2,
-  "source": "ChatGPT",
-  "records": [
+  "keibaRecords": [
     {
-      "id": "sample-2026-08-30-niigata-11-win-7",
-      "raceDate": "2026-08-30",
-      "track": "新潟",
-      "raceNo": 11,
-      "raceName": "サンプルレース",
-      "surface": "芝",
-      "distance": 1600,
-      "going": "良",
-      "fieldSize": 16,
-      "minutesBefore": 3,
-      "decision": "購入",
-      "betType": "単勝",
-      "selection": "7",
-      "popularity": 5,
-      "predProb": 22.0,
-      "oddsLow": 6.0,
-      "oddsHigh": null,
-      "evalOdds": 6.0,
-      "stake": 200,
-      "confidence": 3,
-      "thresholdEv": 110,
-      "modelName": "ChatGPT",
-      "modelVersion": "v2",
-      "factors": [
-        "近走内容",
-        "距離適性",
-        "人気/オッズの歪み"
-      ],
-      "analysisMemo": "読み込み確認用のサンプルです。実際の馬券記録ではありません。",
+      "id": "sample-keiba-2026-08-25-01",
+      "raceDate": "2026-08-25",
+      "track": "サンプル競馬場",
+      "raceNo": 8,
+      "startTime": "15:10",
+      "betType": "複勝",
+      "selection": "3",
+      "predProb": 38.0,
+      "evalOdds": 2.8,
+      "stake": 100,
+      "popularity": 4,
+      "analysisMemo": "サンプル。実際の予想ではありません。",
       "resultStatus": "未確定"
+    }
+  ],
+  "stockRecords": [
+    {
+      "id": "sample-stock-2026-08-25-0000",
+      "name": "サンプル株式会社",
+      "code": "0000",
+      "entryDate": "2026-08-25",
+      "status": "保有中",
+      "entryPrice": 1000,
+      "virtualAmount": 10000,
+      "targetPrice": 1100,
+      "stopLoss": 960,
+      "holdDays": 10,
+      "thesis": "サンプル。実際の銘柄ではありません。"
     }
   ]
 }

@@ -3,247 +3,212 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
-  <title>競馬 期待値検証トラッカー v2</title>
+  <meta name="theme-color" content="#111827" />
+  <title>Pocket Money｜仮想投資検証</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="app-header">
     <div class="header-inner">
       <div>
-        <p class="eyebrow">KEIBA EV TRACKER v2</p>
-        <h1>競馬 期待値検証</h1>
-        <p class="sub">チャッピーが作った記録ファイルを読み込むだけ。普段の手入力はほぼ不要。</p>
+        <p class="eyebrow">POCKET MONEY TRACKER v3</p>
+        <h1>Pocket Money</h1>
+        <p class="sub">競馬と株を、実際のお金を使わずに検証する記録アプリ。</p>
       </div>
-      <div class="private-chip">記録はこの端末だけ</div>
+      <div class="private-chip">仮想運用</div>
     </div>
   </header>
 
   <main class="container">
+    <nav class="tabs" aria-label="記録種別">
+      <button class="tab-btn active" data-tab="keiba" type="button">競馬</button>
+      <button class="tab-btn" data-tab="stock" type="button">株</button>
+    </nav>
 
     <section class="card import-card">
       <div class="section-head">
         <div>
           <h2>チャッピー連携</h2>
-          <p>予想・購入・結果をチャッピーがJSONにして渡す → ここで読み込むだけ。</p>
+          <p>週1回、チャッピーが出したJSONを読み込むだけ。競馬と株をまとめて追加・更新できます。</p>
         </div>
       </div>
-
       <div class="connect-box">
         <div class="connect-copy">
-          <strong>既存の記録は消さずに追加・更新</strong>
-          <span>同じ記録IDなら上書き更新。結果だけ後から反映することもできます。</span>
+          <strong>同じIDは自動更新</strong>
+          <span>予想→結果、仮想買い→仮想売りも同じ記録に反映します。</span>
         </div>
         <label class="big-file-btn">
           チャッピーの記録を読み込む
           <input id="chappyImportInput" type="file" accept=".json,application/json" hidden />
         </label>
       </div>
-
       <div id="importStatus" class="status-line">まだ読み込んでいません。</div>
-
       <details class="howto">
-        <summary>どういう連携？</summary>
-        <p>ChatGPTとGitHub Pagesが直接つながっているわけではありません。チャッピーがこのツール用のJSONを作り、あなたがファイルを1回選ぶ方式です。記録データはGitHubには送られず、このブラウザ内に保存されます。</p>
+        <summary>保存の仕組み</summary>
+        <p>読み込んだ記録はこのブラウザのlocalStorageに保存されます。GitHubへ自動送信はしません。週1回のJSON/CSV出力をGitHubへアップする運用向けです。</p>
       </details>
     </section>
 
-    <section class="stats-grid" aria-label="集計">
-      <div class="stat-card"><span>購入件数</span><strong id="statBought">0</strong></div>
-      <div class="stat-card"><span>投資額</span><strong id="statStake">0円</strong></div>
-      <div class="stat-card"><span>払戻額</span><strong id="statReturn">0円</strong></div>
-      <div class="stat-card"><span>損益</span><strong id="statProfit">0円</strong></div>
-      <div class="stat-card"><span>実回収率</span><strong id="statRoi">—</strong></div>
-      <div class="stat-card"><span>的中率</span><strong id="statHitRate">—</strong></div>
-      <div class="stat-card"><span>平均予測EV</span><strong id="statAvgEv">—</strong></div>
-      <div class="stat-card"><span>候補総数</span><strong id="statCandidates">0</strong></div>
+    <section id="keibaPanel" class="tab-panel active">
+      <section class="stats-grid" aria-label="競馬集計">
+        <div class="stat-card"><span>仮想購入件数</span><strong id="kStatBought">0</strong></div>
+        <div class="stat-card"><span>仮想投資額</span><strong id="kStatStake">0円</strong></div>
+        <div class="stat-card"><span>仮想払戻額</span><strong id="kStatReturn">0円</strong></div>
+        <div class="stat-card"><span>仮想損益</span><strong id="kStatProfit">0円</strong></div>
+        <div class="stat-card"><span>実回収率</span><strong id="kStatRoi">—</strong></div>
+        <div class="stat-card"><span>的中率</span><strong id="kStatHitRate">—</strong></div>
+        <div class="stat-card"><span>平均予測EV</span><strong id="kStatAvgEv">—</strong></div>
+        <div class="stat-card"><span>候補総数</span><strong id="kStatCandidates">0</strong></div>
+      </section>
+
+      <section class="card settings-card">
+        <div class="compact-row">
+          <label><span>月の仮想予算</span><input id="monthlyBudget" type="number" min="0" step="100" value="10000" /></label>
+          <label><span>分析バージョン</span><input id="modelVersion" type="text" value="v3" /></label>
+        </div>
+        <div class="budget-bar-wrap">
+          <div class="budget-meta"><strong id="budgetMonthLabel">今月</strong><span id="budgetText">0 / 10,000円</span></div>
+          <div class="budget-bar"><div id="budgetBarFill"></div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><div><h2>競馬ダッシュボード</h2><p>券種・EV帯・予測確率の精度を検証します。</p></div></div>
+        <div class="analysis-block"><h3>券種別</h3><div class="table-wrap"><table id="byBetTypeTable"></table></div></div>
+        <div class="analysis-block"><h3>予測EV帯別</h3><div class="table-wrap"><table id="byEvBandTable"></table></div></div>
+        <div class="analysis-block"><h3>確率予測の校正</h3><div class="table-wrap"><table id="calibrationTable"></table></div></div>
+        <div class="analysis-block">
+          <h3>EVしきい値シミュレーション</h3>
+          <div class="sim-row"><label><span>EV</span><input id="simEvThreshold" type="number" min="0" step="1" value="110" /><span>%以上を各100円</span></label><button id="runSimulationBtn" class="secondary-btn" type="button">計算</button></div>
+          <div id="simulationResult" class="simulation-result">結果が溜まると比較できます。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><div><h2>競馬の記録</h2><p>EV100%以上の候補と、その後の結果を蓄積。</p></div></div>
+        <div class="filters">
+          <input id="kSearchText" type="search" placeholder="競馬場・買い目・メモを検索" />
+          <select id="kFilterBetType"><option value="">券種：すべて</option></select>
+          <select id="kFilterResult"><option value="">結果：すべて</option><option>未確定</option><option>的中</option><option>不的中</option><option>返還</option></select>
+        </div>
+        <div class="table-wrap records-wrap"><table id="keibaRecordsTable"></table></div>
+        <p id="keibaEmpty" class="empty">まだ競馬記録がありません。</p>
+      </section>
+
+      <section class="card">
+        <details id="keibaManualDetails">
+          <summary class="manual-summary">競馬の手入力・修正（必要なときだけ）</summary>
+          <form id="keibaForm" novalidate>
+            <input id="kId" type="hidden" />
+            <div class="form-section-title">レース・予測</div>
+            <div class="form-grid cols-4">
+              <label><span>日付 *</span><input id="kRaceDate" type="date" required /></label>
+              <label><span>競馬場 *</span><input id="kTrack" type="text" required /></label>
+              <label><span>R *</span><input id="kRaceNo" type="number" min="1" max="12" required /></label>
+              <label><span>発走時刻</span><input id="kStartTime" type="time" /></label>
+            </div>
+            <div class="form-grid cols-4">
+              <label><span>券種 *</span><select id="kBetType"><option>単勝</option><option>複勝</option><option>ワイド</option><option>馬連</option><option>馬単</option><option>3連複</option><option>3連単</option><option>枠連</option><option>その他</option></select></label>
+              <label><span>買い目 *</span><input id="kSelection" type="text" required /></label>
+              <label><span>推定的中率 % *</span><input id="kPredProb" type="number" min="0" max="100" step="0.1" required /></label>
+              <label><span>判断時オッズ *</span><input id="kEvalOdds" type="number" min="1" step="0.1" required /></label>
+            </div>
+            <div class="calc-strip"><div><span>適正オッズ</span><strong id="kFairOddsPreview">—</strong></div><div><span>予測EV</span><strong id="kEvPreview">—</strong></div><div><span>最低購入オッズ</span><strong id="kMinOddsPreview">—</strong></div></div>
+            <div class="form-grid cols-4">
+              <label><span>仮想購入額</span><input id="kStake" type="number" min="0" step="100" value="100" /></label>
+              <label><span>人気</span><input id="kPopularity" type="number" min="1" max="30" /></label>
+              <label><span>結果</span><select id="kResultStatus"><option>未確定</option><option>的中</option><option>不的中</option><option>返還</option></select></label>
+              <label><span>払戻/100円</span><input id="kPayoutPer100" type="number" min="0" step="10" /></label>
+            </div>
+            <label class="full-label"><span>分析メモ</span><textarea id="kMemo" rows="2"></textarea></label>
+            <div class="form-actions"><button id="kClearBtn" class="ghost-btn" type="button">クリア</button><button class="primary-btn" type="submit">保存</button></div>
+            <p id="kFormError" class="error"></p>
+          </form>
+        </details>
+      </section>
     </section>
 
-    <section class="card settings-card">
-      <div class="compact-row">
-        <label>
-          <span>月予算</span>
-          <input id="monthlyBudget" type="number" min="0" step="100" value="10000" />
-        </label>
-        <label>
-          <span>分析バージョン</span>
-          <input id="modelVersion" type="text" value="v2" />
-        </label>
-      </div>
-      <div class="budget-bar-wrap">
-        <div class="budget-meta">
-          <strong id="budgetMonthLabel">今月</strong>
-          <span id="budgetText">0 / 10,000円</span>
+    <section id="stockPanel" class="tab-panel">
+      <section class="stats-grid" aria-label="株集計">
+        <div class="stat-card"><span>保有中</span><strong id="sStatOpen">0</strong></div>
+        <div class="stat-card"><span>決済件数</span><strong id="sStatClosed">0</strong></div>
+        <div class="stat-card"><span>勝率</span><strong id="sStatWinRate">—</strong></div>
+        <div class="stat-card"><span>累計損益</span><strong id="sStatProfit">0円</strong></div>
+        <div class="stat-card"><span>平均損益率</span><strong id="sStatAvgReturn">—</strong></div>
+        <div class="stat-card"><span>平均利益</span><strong id="sStatAvgWin">—</strong></div>
+        <div class="stat-card"><span>平均損失</span><strong id="sStatAvgLoss">—</strong></div>
+        <div class="stat-card"><span>記録総数</span><strong id="sStatTotal">0</strong></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><div><h2>株ダッシュボード</h2><p>仮想エントリーの成績と、リスクリワードを確認。</p></div></div>
+        <div class="analysis-block"><h3>ステータス別</h3><div class="table-wrap"><table id="stockStatusTable"></table></div></div>
+        <div class="analysis-block"><h3>決済理由別</h3><div class="table-wrap"><table id="stockExitReasonTable"></table></div></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head"><div><h2>株の記録</h2><p>短期〜数週間の仮想スイングを記録。</p></div></div>
+        <div class="filters stock-filters">
+          <input id="sSearchText" type="search" placeholder="銘柄・コード・根拠を検索" />
+          <select id="sFilterStatus"><option value="">状態：すべて</option><option>監視</option><option>保有中</option><option>決済済</option></select>
+          <select id="sFilterResult"><option value="">損益：すべて</option><option value="win">利益</option><option value="loss">損失</option></select>
         </div>
-        <div class="budget-bar"><div id="budgetBarFill"></div></div>
-      </div>
-    </section>
+        <div class="table-wrap records-wrap"><table id="stockRecordsTable"></table></div>
+        <p id="stockEmpty" class="empty">まだ株記録がありません。</p>
+      </section>
 
-    <section class="card">
-      <div class="section-head">
-        <div>
-          <h2>検証ダッシュボード</h2>
-          <p>「当たったか」だけでなく、予測確率とEVの精度を見ます。</p>
-        </div>
-      </div>
-
-      <div class="analysis-block">
-        <h3>券種別</h3>
-        <div class="table-wrap"><table id="byBetTypeTable"></table></div>
-      </div>
-
-      <div class="analysis-block">
-        <h3>予測EV帯別</h3>
-        <div class="table-wrap"><table id="byEvBandTable"></table></div>
-      </div>
-
-      <div class="analysis-block">
-        <h3>確率予測の校正</h3>
-        <p class="hint">例：予測20〜30%の馬券が大量にあるなら、実際の的中率もその近辺かを確認。</p>
-        <div class="table-wrap"><table id="calibrationTable"></table></div>
-      </div>
-
-      <div class="analysis-block">
-        <h3>EVしきい値シミュレーション</h3>
-        <div class="sim-row">
-          <label><span>EV</span><input id="simEvThreshold" type="number" min="0" step="1" value="110" /><span>%以上を各100円</span></label>
-          <button id="runSimulationBtn" class="secondary-btn" type="button">計算</button>
-        </div>
-        <div id="simulationResult" class="simulation-result">結果が溜まると比較できます。</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="section-head">
-        <div>
-          <h2>記録一覧</h2>
-          <p>購入と見送りを両方残します。</p>
-        </div>
-      </div>
-
-      <div class="filters">
-        <input id="searchText" type="search" placeholder="競馬場・買い目・メモを検索" />
-        <select id="filterDecision"><option value="">判断：すべて</option><option>購入</option><option>見送り</option></select>
-        <select id="filterBetType"><option value="">券種：すべて</option></select>
-        <select id="filterResult"><option value="">結果：すべて</option><option>未確定</option><option>的中</option><option>不的中</option><option>返還</option></select>
-      </div>
-
-      <div class="table-wrap records-wrap">
-        <table id="recordsTable"></table>
-      </div>
-      <p id="emptyMessage" class="empty">まだ記録がありません。</p>
-    </section>
-
-    <section class="card">
-      <details id="manualDetails">
-        <summary class="manual-summary">手入力・修正（必要なときだけ）</summary>
-
-        <form id="recordForm" novalidate>
-          <input id="recordId" type="hidden" />
-
-          <div class="form-section-title">レース情報</div>
-          <div class="form-grid cols-4">
-            <label><span>日付 *</span><input id="raceDate" type="date" required /></label>
-            <label><span>競馬場 *</span><input id="track" type="text" placeholder="例：阪神" required /></label>
-            <label><span>R *</span><input id="raceNo" type="number" min="1" max="12" required /></label>
-            <label><span>発走時刻</span><input id="startTime" type="time" /></label>
-          </div>
-
-          <div class="form-grid cols-4">
-            <label><span>芝・ダート</span>
-              <select id="surface"><option value="">—</option><option>芝</option><option>ダート</option><option>障害</option><option>その他</option></select>
-            </label>
-            <label><span>距離（m）</span><input id="distance" type="number" min="0" step="100" /></label>
-            <label><span>馬場状態</span>
-              <select id="going"><option value="">—</option><option>良</option><option>稍重</option><option>重</option><option>不良</option><option>その他</option></select>
-            </label>
-            <label><span>出走頭数</span><input id="fieldSize" type="number" min="1" max="30" /></label>
-          </div>
-
-          <div class="form-grid cols-2">
-            <label><span>レース名 / クラス</span><input id="raceName" type="text" /></label>
-            <label><span>予想時点（発走何分前）</span><input id="minutesBefore" type="number" min="0" step="0.1" /></label>
-          </div>
-
-          <div class="form-section-title">買い目・予測</div>
-          <div class="form-grid cols-4">
-            <label><span>購入判断 *</span><select id="decision"><option>購入</option><option>見送り</option></select></label>
-            <label><span>券種 *</span>
-              <select id="betType"><option>単勝</option><option>複勝</option><option>ワイド</option><option>馬連</option><option>馬単</option><option>3連複</option><option>3連単</option><option>枠連</option><option>WIN5</option><option>その他</option></select>
-            </label>
-            <label><span>買い目 *</span><input id="selection" type="text" required /></label>
-            <label><span>人気</span><input id="popularity" type="number" min="1" max="30" /></label>
-          </div>
-
-          <div class="form-grid cols-4">
-            <label><span>推定的中確率（%）*</span><input id="predProb" type="number" min="0" max="100" step="0.1" required /></label>
-            <label><span>判断時オッズ 下限 *</span><input id="oddsLow" type="number" min="1" step="0.1" required /></label>
-            <label><span>判断時オッズ 上限</span><input id="oddsHigh" type="number" min="1" step="0.1" /></label>
-            <label><span>EV計算用オッズ *</span><input id="evalOdds" type="number" min="1" step="0.1" required /></label>
-          </div>
-
-          <div class="calc-strip">
-            <div><span>適正オッズ</span><strong id="fairOddsPreview">—</strong></div>
-            <div><span>予測EV</span><strong id="evPreview">—</strong></div>
-            <div><span>市場との差</span><strong id="edgePreview">—</strong></div>
-          </div>
-
-          <div class="form-grid cols-4">
-            <label><span>購入額（円）</span><input id="stake" type="number" min="0" step="100" value="100" /></label>
-            <label><span>信頼度</span>
-              <select id="confidence"><option value="">—</option><option value="1">1 低い</option><option value="2">2</option><option value="3">3 普通</option><option value="4">4</option><option value="5">5 高い</option></select>
-            </label>
-            <label><span>最低購入EV</span><input id="thresholdEv" type="number" min="0" step="1" value="110" /></label>
-            <label><span>予想モデル</span><input id="modelName" type="text" value="ChatGPT" /></label>
-          </div>
-
-          <fieldset class="factor-box">
-            <legend>判断で重視した要因</legend>
-            <div id="factorChecks" class="check-grid"></div>
-          </fieldset>
-
-          <label class="full-label"><span>分析メモ</span><textarea id="analysisMemo" rows="2"></textarea></label>
-
-          <div class="form-section-title">レース後</div>
-          <div class="form-grid cols-4">
-            <label><span>結果</span><select id="resultStatus"><option>未確定</option><option>的中</option><option>不的中</option><option>返還</option></select></label>
-            <label><span>最終オッズ 下限</span><input id="finalOddsLow" type="number" min="1" step="0.1" /></label>
-            <label><span>最終オッズ 上限</span><input id="finalOddsHigh" type="number" min="1" step="0.1" /></label>
-            <label><span>公式払戻（100円あたり）</span><input id="payoutPer100" type="number" min="0" step="10" /></label>
-          </div>
-
-          <label class="full-label"><span>結果メモ</span><textarea id="resultMemo" rows="2"></textarea></label>
-
-          <div class="form-actions">
-            <button class="ghost-btn" type="button" id="clearFormBtn">入力をクリア</button>
-            <button class="primary-btn" type="submit" id="saveBtn">記録を保存</button>
-          </div>
-          <p id="formError" class="error"></p>
-        </form>
-      </details>
+      <section class="card">
+        <details id="stockManualDetails">
+          <summary class="manual-summary">株の手入力・修正（必要なときだけ）</summary>
+          <form id="stockForm" novalidate>
+            <input id="sId" type="hidden" />
+            <div class="form-section-title">エントリー</div>
+            <div class="form-grid cols-4">
+              <label><span>銘柄名 *</span><input id="sName" type="text" required /></label>
+              <label><span>コード *</span><input id="sCode" type="text" inputmode="numeric" required /></label>
+              <label><span>エントリー日 *</span><input id="sEntryDate" type="date" required /></label>
+              <label><span>状態</span><select id="sStatus"><option>監視</option><option>保有中</option><option>決済済</option></select></label>
+            </div>
+            <div class="form-grid cols-4">
+              <label><span>仮想買値</span><input id="sEntryPrice" type="number" min="0" step="0.1" /></label>
+              <label><span>仮想投資額</span><input id="sAmount" type="number" min="0" step="100" value="10000" /></label>
+              <label><span>目標株価</span><input id="sTarget" type="number" min="0" step="0.1" /></label>
+              <label><span>損切り水準</span><input id="sStop" type="number" min="0" step="0.1" /></label>
+            </div>
+            <div class="calc-strip"><div><span>上昇余地</span><strong id="sUpsidePreview">—</strong></div><div><span>下落リスク</span><strong id="sDownsidePreview">—</strong></div><div><span>リスクリワード</span><strong id="sRrPreview">—</strong></div></div>
+            <div class="form-grid cols-2">
+              <label><span>想定保有期間（日）</span><input id="sHoldDays" type="number" min="0" step="1" /></label>
+              <label><span>分析日時</span><input id="sAnalyzedAt" type="datetime-local" /></label>
+            </div>
+            <label class="full-label"><span>エントリー根拠</span><textarea id="sThesis" rows="2"></textarea></label>
+            <div class="form-section-title">決済</div>
+            <div class="form-grid cols-4">
+              <label><span>決済日</span><input id="sExitDate" type="date" /></label>
+              <label><span>決済値</span><input id="sExitPrice" type="number" min="0" step="0.1" /></label>
+              <label><span>決済理由</span><select id="sExitReason"><option value="">—</option><option>目標到達</option><option>損切り</option><option>前提崩れ</option><option>保有期限</option><option>その他</option></select></label>
+              <label><span>現在値（任意）</span><input id="sCurrentPrice" type="number" min="0" step="0.1" /></label>
+            </div>
+            <label class="full-label"><span>決済メモ</span><textarea id="sExitMemo" rows="2"></textarea></label>
+            <div class="form-actions"><button id="sClearBtn" class="ghost-btn" type="button">クリア</button><button class="primary-btn" type="submit">保存</button></div>
+            <p id="sFormError" class="error"></p>
+          </form>
+        </details>
+      </section>
     </section>
 
     <section class="card backup-card">
-      <div class="section-head">
-        <div>
-          <h2>バックアップ・分析用</h2>
-          <p>記録そのものはGitHubに上がりません。JSONは復元用、CSVはExcelやチャッピーでの分析用。</p>
-        </div>
-      </div>
+      <div class="section-head"><div><h2>週1バックアップ</h2><p>競馬＋株をまとめて出力。JSONは復元用、CSVは分析用です。</p></div></div>
       <div class="backup-actions">
-        <button id="exportJsonBtn" class="secondary-btn" type="button">バックアップJSON</button>
-        <button id="exportCsvBtn" class="secondary-btn" type="button">分析用CSV</button>
+        <button id="exportAllJsonBtn" class="secondary-btn" type="button">全部まとめてJSON</button>
+        <button id="exportKeibaCsvBtn" class="secondary-btn" type="button">競馬CSV</button>
+        <button id="exportStockCsvBtn" class="secondary-btn" type="button">株CSV</button>
         <label class="file-btn">バックアップ復元<input id="restoreJsonInput" type="file" accept=".json,application/json" hidden /></label>
         <button id="deleteAllBtn" class="danger-btn" type="button">全データ削除</button>
       </div>
     </section>
-
   </main>
 
-  <footer>
-    <p>利益を保証するものではありません。期待値予測の精度と実績を検証するための記録ツールです。</p>
-  </footer>
-
+  <footer><p>実際の購入・投資を行うアプリではありません。予測・判断の再現性を検証するための仮想記録ツールです。</p></footer>
   <script src="script.js"></script>
 </body>
 </html>
