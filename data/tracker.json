@@ -1,7 +1,7 @@
 {
   "app": "Pocket Money",
   "version": 4,
-  "updatedAt": "2026-08-31T13:01:00+09:00",
+  "updatedAt": "2026-08-31T14:02:00+09:00",
   "classification": {
     "A": "事前予想・事前エントリー。本番の成績評価に使用",
     "B": "結果判明後の後付け検証。サンプル拡張用でAとは分離評価"
@@ -65,11 +65,17 @@
         "BOOKERS 楓AI競馬予想 2026-08-31（1着率19.9%、適正オッズ5.0）",
         "BOOKERS ゆっくり競馬予想AI 2026-08-31（当レースで本馬を上位評価）"
       ],
-      "resultStatus": "pending",
+      "resultStatus": "不的中",
+      "result": "10番マイネルレクエルドが1着。2番セレスチャルホープは単勝不的中。",
       "finalOdds": null,
-      "payoutPer100": null,
-      "virtualProfit": null,
-      "auditStatus": "pre_race_locked"
+      "finalOddsStatus": "pending_verification",
+      "lastVerifiedOdds": 3.0,
+      "lastVerifiedOddsAt": "2026-08-31T12:38:00+09:00",
+      "payoutPer100": 0,
+      "virtualProfit": -100,
+      "resultCheckedAt": "2026-08-31T14:02:00+09:00",
+      "resultSource": "楽天競馬 2026-08-31 盛岡3R 競走成績・払戻金",
+      "auditStatus": "pre_race_locked_result_added"
     },
     {
       "id": "keiba-A-2026-08-31-morioka-4-5-evergreen-win",
@@ -106,11 +112,17 @@
         "JBISサーチ 2026-08-31 盛岡4R 出走表・近走成績",
         "地方競馬情報サイト 本日のレース情報 2026-08-31"
       ],
-      "resultStatus": "pending",
+      "resultStatus": "不的中",
+      "result": "8番ヘクトプリンセスが1着。5番エバーグリーンは単勝不的中。",
       "finalOdds": null,
-      "payoutPer100": null,
-      "virtualProfit": null,
-      "auditStatus": "pre_race_locked"
+      "finalOddsStatus": "pending_verification",
+      "lastVerifiedOdds": 3.9,
+      "lastVerifiedOddsAt": "2026-08-31T13:13:00+09:00",
+      "payoutPer100": 0,
+      "virtualProfit": -100,
+      "resultCheckedAt": "2026-08-31T14:02:00+09:00",
+      "resultSource": "楽天競馬 2026-08-31 盛岡4R 競走成績・払戻金",
+      "auditStatus": "pre_race_locked_result_added"
     }
   ],
   "stockRecords": [
