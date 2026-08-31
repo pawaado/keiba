@@ -1,7 +1,7 @@
 {
   "app": "Pocket Money",
   "version": 4,
-  "updatedAt": "2026-08-31T14:02:00+09:00",
+  "updatedAt": "2026-08-31T15:32:00+09:00",
   "classification": {
     "A": "事前予想・事前エントリー。本番の成績評価に使用",
     "B": "結果判明後の後付け検証。サンプル拡張用でAとは分離評価"
@@ -140,7 +140,20 @@
       "targetPrice": 5850,
       "stopLoss": 5050,
       "holdDays": 21,
-      "thesis": "強い決算、AI・データセンター向け需要、株価モメンタムを根拠にした事前の仮想エントリー。"
+      "thesis": "強い決算、AI・データセンター向け需要、株価モメンタムを根拠にした事前の仮想エントリー。",
+      "currentPrice": 5489,
+      "previousClose": 5340,
+      "priceUpdatedAt": "2026-08-31T15:30:00+09:00",
+      "dailyChangePercent": 2.79,
+      "unrealizedProfit": 356.6,
+      "unrealizedReturnPercent": 3.57,
+      "targetDistancePercent": 6.58,
+      "stopDistancePercent": -8.0,
+      "dayHigh": 5525,
+      "dayLow": 5123,
+      "volume": 42354700,
+      "marketDataSource": "Yahoo!ファイナンス 5803.T 2026-08-31",
+      "dailyReview": "8/31終値5489円。前営業日比+149円（+2.79%）。仮想買値5300円から+3.57%で、仮想1万円あたり含み益は約357円。目標5850円まで約+6.58%、損切り5050円まで約-8.00%。地合いは日経平均が弱含む中でもフジクラは相対的に強く、直近1Qのデータセンター向け光製品需要拡大という前提も維持。目標・損切り・保有期限のいずれにも未到達のため保有継続。"
     }
   ]
 }
