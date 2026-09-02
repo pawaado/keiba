@@ -1,7 +1,7 @@
 {
   "app": "Pocket Money",
   "version": 4,
-  "updatedAt": "2026-09-02T10:02:07+09:00",
+  "updatedAt": "2026-09-02T13:01:52+09:00",
   "classification": {
     "A": "事前予想・事前エントリー。本番の成績評価に使用",
     "B": "結果判明後の後付け検証。サンプル拡張用でAとは分離評価"
@@ -309,6 +309,50 @@
       "resultCheckedAt": "2026-09-02T10:02:07+09:00",
       "resultSource": "楽天競馬 2026-09-01 大井7R 競走成績・最終単勝オッズ",
       "auditStatus": "pre_race_locked_result_added_final_odds_verified"
+    },
+    {
+      "id": "keiba-A-2026-09-02-oi-5-6-palemoon-win",
+      "assetType": "keiba",
+      "validationType": "A",
+      "retrospective": false,
+      "raceDate": "2026-09-02",
+      "track": "大井",
+      "raceNo": 5,
+      "startTime": "16:58",
+      "betType": "単勝",
+      "selection": "6 ペイルムーン",
+      "predProb": 0.06,
+      "evalOdds": 23.3,
+      "estimatedEVPercent": 139.8,
+      "evBand5Percent": "135-140%",
+      "minimumPurchaseOdds": 16.67,
+      "stake": 100,
+      "popularity": 7,
+      "decision": "仮想購入",
+      "analysisTime": "2026-09-02T13:01:52+09:00",
+      "oddsObservedAt": "2026-09-02T12:59:00+09:00",
+      "weather": "曇",
+      "trackCondition": "良",
+      "distanceCourse": "大井ダ1000m外",
+      "gate": "5枠6番",
+      "jockey": "達城龍次",
+      "weightCarriedKg": 54.0,
+      "bodyWeightInfo": "当日公開出馬表で456kg表示。前走8/13は442kgで、単純比較では+14kg相当だが公開ページの増減欄は解析上『-』表示のため増減値は監査留保。",
+      "trainingInfo": "公開検索で当日の独立した調教時計は確認できず。調教情報が取得不能な点をリスクとして勝率を6%まで保守補正。",
+      "runningStyle": "好位〜差し。7/23大井1200mは3-3から2着、8/13大井1400mは3-1-1から1着。1000mダート実績は公開出馬表上で未確認で、距離短縮への対応が最大の不確定要素。",
+      "analysisMemo": "結果判明前のA事前記録。大井5R C2二、12頭、ダ1000m外。12:59時点で曇・良、単勝23.3倍7番人気。本馬の取消表示は公開出馬表で確認されず、騎手は達城龍次54kg。近5走は8/13大井1400m1着1:28.7、7/23大井1200m2着1:14.3、6/30大井1200m3着、6/8大井1200m3着、5/20大井1200m3着と近況の安定度が高い。特に1200mで前々走2着、1400mで前走勝利と状態面は良好。一方、今回は1000mへの短縮で同距離ダート実績が確認できず、10シルバーマックなど先行スピード型がいて序盤の追走リスクがある。公開予想では6番を対抗評価する事前予想もあり、12:59の市場価格23.3倍は近況に対して大きめと判断。ただし1000m適性、当日調教時計未取得、馬体重表示の増減解釈不確実性を重く見て勝率は6%に抑制。EV=6%×23.3=139.8%、最低購入オッズ16.67倍。",
+      "sources": [
+        "楽天競馬 2026-09-02 大井5R 単勝オッズ12:59・天候曇・馬場良",
+        "楽天競馬 2026-09-02 大井5R 出馬表・近5走・馬体重・騎手斤量",
+        "競馬ファンのウマ活メモ 2026-09-02 大井5R事前予想（ペイルムーン○）",
+        "JBISサーチ 2026-09-02 大井開催情報"
+      ],
+      "resultStatus": "pending",
+      "result": null,
+      "finalOdds": null,
+      "payoutPer100": null,
+      "virtualProfit": null,
+      "auditStatus": "pre_race_locked"
     }
   ],
   "stockRecords": [
