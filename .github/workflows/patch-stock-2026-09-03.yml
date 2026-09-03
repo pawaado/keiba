@@ -1,0 +1,46 @@
+name: Patch stock close 2026-09-03
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-stock-2026-09-03.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Fujikura record
+        shell: bash
+        run: |
+          set -euo pipefail
+          jq '(.updatedAt = "2026-09-03T15:30:00+09:00") |
+              (.stockRecords[] | select(.id == "stock-5803-2026-08-25")) |=
+              (.status = "決済済" |
+               .currentPrice = 4951 |
+               .previousClose = 5090 |
+               .priceUpdatedAt = "2026-09-03T15:30:00+09:00" |
+               .dailyChangePercent = -2.73 |
+               .unrealizedProfit = -658.49 |
+               .unrealizedReturnPercent = -6.58 |
+               .targetDistancePercent = 18.16 |
+               .stopDistancePercent = 2.00 |
+               .dayHigh = 5154 |
+               .dayLow = 4897 |
+               .volume = 37758400 |
+               .marketDataSource = "Yahoo!ファイナンス 5803.T 2026-09-03 15:30" |
+               .exitDate = "2026-09-03" |
+               .exitPrice = 4951 |
+               .exitReason = "損切り" |
+               .realizedProfit = -658.49 |
+               .realizedReturnPercent = -6.58 |
+               .dailyReview = "9/3終値4951円、前営業日終値5090円から-139円（-2.73%）。仮想買値5300円から-6.58%、仮想1万円あたり約658円の損失。終値が事前設定の損切り水準5050円を下回ったため、日次終値ルールに従い4951円で仮想決済。高値5154円、安値4897円、出来高3775万8400株。業績・AIデータセンター需要の中期前提は維持される一方、8/31の5504円から9/3まで3営業日続落し短期モメンタムが悪化したため、ルールを優先して損切り。" |
+               .auditStatus = "daily_close_stop_loss_executed")' data/tracker.json > data/tracker.tmp
+          mv data/tracker.tmp data/tracker.json
+      - name: Commit update
+        run: |
+          git config user.name "Pocket Money Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/tracker.json
+          git commit -m "Update Fujikura 2026-09-03 close and stop loss" || exit 0
+          git push
