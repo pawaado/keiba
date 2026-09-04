@@ -1,7 +1,7 @@
 {
   "app": "Pocket Money",
   "version": 4,
-  "updatedAt": "2026-09-03T15:30:00+09:00",
+  "updatedAt": "2026-09-04T12:59:47+09:00",
   "classification": {
     "A": "事前予想・事前エントリー。本番の成績評価に使用",
     "B": "結果判明後の後付け検証。サンプル拡張用でAとは分離評価"
@@ -582,12 +582,16 @@
         "Race Postman 2026-09-03 名古屋2R 市場・騎手厩舎分析",
         "note うまこ 2026-09-03 名古屋2R事前予想（ケイツークルサード本命）"
       ],
-      "resultStatus": "pending",
-      "result": null,
+      "resultStatus": "除外返還",
+      "result": "3番ケイツークルサードは競走除外。単勝は返還扱い。",
       "finalOdds": null,
-      "payoutPer100": null,
-      "virtualProfit": null,
-      "auditStatus": "pre_race_locked"
+      "finalOddsStatus": "not_applicable_excluded",
+      "payoutPer100": 100,
+      "virtualProfit": 0,
+      "resultCheckedAt": "2026-09-04T12:59:47+09:00",
+      "resultSource": "南関東4競馬場 nankankeiba.com 2026-09-03 名古屋2R レース情報（3番ケイツークルサード除外）",
+      "postRaceAudit": "事前分析後に競走除外となったため、仮想単勝100円は返還扱い。Aの予想記録自体は保持するが、損益は0円。",
+      "auditStatus": "pre_race_locked_excluded_refund_verified"
     }
   ],
   "stockRecords": [
