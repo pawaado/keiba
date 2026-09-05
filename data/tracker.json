@@ -1,7 +1,7 @@
 {
   "app": "Pocket Money",
   "version": 4,
-  "updatedAt": "2026-09-04T12:59:47+09:00",
+  "updatedAt": "2026-09-05T15:58:10+09:00",
   "classification": {
     "A": "事前予想・事前エントリー。本番の成績評価に使用",
     "B": "結果判明後の後付け検証。サンプル拡張用でAとは分離評価"
@@ -592,6 +592,49 @@
       "resultSource": "南関東4競馬場 nankankeiba.com 2026-09-03 名古屋2R レース情報（3番ケイツークルサード除外）",
       "postRaceAudit": "事前分析後に競走除外となったため、仮想単勝100円は返還扱い。Aの予想記録自体は保持するが、損益は0円。",
       "auditStatus": "pre_race_locked_excluded_refund_verified"
+    },
+    {
+      "id": "keiba-A-2026-09-05-kochi-7-1-plaisir-win",
+      "assetType": "keiba",
+      "validationType": "A",
+      "retrospective": false,
+      "raceDate": "2026-09-05",
+      "track": "高知",
+      "raceNo": 7,
+      "startTime": "18:45",
+      "betType": "単勝",
+      "selection": "1 プレジール",
+      "predProb": 0.48,
+      "evalOdds": 2.1,
+      "estimatedEVPercent": 100.8,
+      "evBand5Percent": "100-105%",
+      "minimumPurchaseOdds": 2.09,
+      "stake": 100,
+      "popularity": 1,
+      "decision": "仮想購入",
+      "analysisTime": "2026-09-05T15:58:10+09:00",
+      "oddsObservedAt": "2026-09-05T15:58:00+09:00",
+      "weather": "曇",
+      "trackCondition": "不良",
+      "distanceCourse": "高知ダ1600m右",
+      "gate": "1枠1番",
+      "jockey": "赤岡修次",
+      "weightCarriedKg": 57.0,
+      "bodyWeightInfo": "当日公開出馬表で491kgを確認。前走7/11は478kgだが、公開ページの増減欄は解析上『-』表示のため公式増減値は固定せず。",
+      "trainingInfo": "公開検索で当日の独立した調教時計は確認できず。未取得要素とC2からC1-3への相手強化を勝率へ保守反映。",
+      "runningStyle": "逃げ〜好位。6/14高知1600m重は1-1-1-1で勝利、5/10同距離稍重は2-2-2-1で勝利。直近7/11高知1300m重も4-3-3-3から勝っており、道悪で前受けできる点を評価。",
+      "analysisMemo": "結果判明前のA事前記録。高知7R C1-3、9頭、ダ1600m右。15:58時点で曇・不良、単勝2.1倍1番人気。公開出馬表で本馬の取消・騎手変更表示なし。近5走は7/11高知1300m重1着、6/14高知1600m重1着、5/31高知1300m稍重1着、5/10高知1600m稍重1着、4/25高知1400m不良5着で直近4連勝。高知1600mは直近2戦2勝で距離・コース適性を強く評価。赤岡修次57kg、当日491kg。外部事前AIでも本馬を明確な最上位に置き、V1 65.6・V3指数60.8で1位。ただし外部AI値は相互排他的な勝率として正規化されていないため、その数値をそのまま的中確率には採用しない。C2からC1-3への相手強化、約2か月ぶり、当日調教時計未取得、馬体重表示の増減不確実性を割り引き、独自勝率は48%に抑制。2.1倍ならEV=48%×2.1=100.8%、最低購入オッズ2.09倍。オッズが2.0倍以下へ下がればEV100%未満となるため、判断時価格2.1倍を固定記録。",
+      "sources": [
+        "楽天競馬 2026-09-05 高知7R 出馬表・15:58時点単勝2.1倍1番人気・天候曇・馬場不良・馬体重・近5走",
+        "地方競馬AI予想ラボ 2026-09-05 高知7R 事前AI順位（1番プレジールを最上位評価）",
+        "JBISサーチ 2026-09-05 高知開催情報"
+      ],
+      "resultStatus": "pending",
+      "result": null,
+      "finalOdds": null,
+      "payoutPer100": null,
+      "virtualProfit": null,
+      "auditStatus": "pre_race_locked"
     }
   ],
   "stockRecords": [
